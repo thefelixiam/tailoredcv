@@ -122,7 +122,10 @@ export function normalizeProfileInput(userId: string, input: unknown): UserProfi
         if (typeof item !== "object" || item === null || !("achievements" in item))
             return item;
         const entry = item as Record<string, unknown>;
-        return { ...entry, achievements: skipBlankRows(entry.achievements as unknown[] | undefined) };
+        const cleanedEntry = { ...entry, achievements: skipBlankRows(entry.achievements as unknown[] | undefined) } as Record<string, unknown>;
+        if ("links" in entry)
+            cleanedEntry.links = skipBlankRows(entry.links as unknown[] | undefined);
+        return cleanedEntry;
     });
     const cleaned = {
         ...raw,

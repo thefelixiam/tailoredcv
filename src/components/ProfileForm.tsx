@@ -50,6 +50,35 @@ interface Ach {
     text: string;
     tags: string[];
 }
+interface LinkItem {
+  label: string;
+  url: string;
+}
+function LinksEditor({ value, onChange, basePath, fieldErrors, }: {
+  value: LinkItem[];
+  onChange: (v: LinkItem[]) => void;
+  basePath: string;
+  fieldErrors: Record<string, string | undefined>;
+}) {
+  return (<div className="space-y-2">
+      {value.map((l, i) => (<div key={i} className="grid gap-2 sm:grid-cols-[1fr_2fr_auto]">
+          <Field label="Label" error={fieldErrors[`${basePath}.${i}.label`]}>
+            <input className={inputCls} value={l.label} placeholder="GitHub" onChange={(e) => onChange(value.map((x, j) => (j === i ? { ...x, label: e.target.value } : x)))}/>
+          </Field>
+          <Field label="URL" error={fieldErrors[`${basePath}.${i}.url`]}>
+            <input className={inputCls} value={l.url} placeholder="https://…" onChange={(e) => onChange(value.map((x, j) => (j === i ? { ...x, url: e.target.value } : x)))}/>
+          </Field>
+          <div className="flex items-end">
+            <button type="button" onClick={() => onChange(value.filter((_, j) => j !== i))} className="rounded-md border border-zinc-300 px-2 py-1 text-xs text-red-600">
+              Remove
+            </button>
+          </div>
+        </div>))}
+      <button type="button" onClick={() => onChange([...value, { label: "", url: "" }])} className="rounded-md border border-dashed border-zinc-300 px-3 py-1.5 text-xs text-zinc-600">
+        + Add link
+      </button>
+    </div>);
+}
 function AchievementsEditor({ value, onChange, basePath, fieldErrors, }: {
     value: Ach[];
     onChange: (v: Ach[]) => void;
@@ -176,6 +205,10 @@ export function ProfileForm({ initial }: {
             </div>
             <CommaField label="Technologies" value={proj.technologies} onChange={(v) => set("projects", profile.projects.map((x, j) => (j === i ? { ...x, technologies: v } : x)))}/>
             <CommaField label="Tags" value={proj.tags} onChange={(v) => set("projects", profile.projects.map((x, j) => (j === i ? { ...x, tags: v } : x)))}/>
+            <div>
+              <span className="mb-1 block text-sm text-zinc-600">Links</span>
+              <LinksEditor value={proj.links} basePath={`projects.${i}.links`} fieldErrors={fieldErrors} onChange={(v) => set("projects", profile.projects.map((x, j) => (j === i ? { ...x, links: v } : x)))}/>
+            </div>
             <div>
               <span className="mb-1 block text-sm text-zinc-600">Achievements</span>
               <AchievementsEditor value={proj.achievements} basePath={`projects.${i}.achievements`} fieldErrors={fieldErrors} onChange={(v) => set("projects", profile.projects.map((x, j) => (j === i ? { ...x, achievements: v } : x)))}/>

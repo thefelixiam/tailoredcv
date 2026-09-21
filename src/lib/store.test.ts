@@ -99,6 +99,12 @@ describe("profiles", () => {
         expect(profile.certifications).toEqual([]);
         expect(profile.languages).toEqual([]);
     });
+    it("keeps project links and skips blank link rows", () => {
+        const profile = normalizeProfileInput("u", {
+            projects: [{ id: "", name: "Demo", description: "", role: "", technologies: [], tags: [], achievements: [], links: [{ label: "GitHub", url: "https://github.com/example-dev/demo" }, { label: "", url: "" }] }],
+        });
+        expect(profile.projects[0].links).toEqual([{ label: "GitHub", url: "https://github.com/example-dev/demo" }]);
+    });
     it("validates the photo URL per field", () => {
         expect(normalizeProfileInput("u", { photo: "https://example.com/me.jpg" }).photo).toBe("https://example.com/me.jpg");
         expect(normalizeProfileInput("u", { photo: "" }).photo).toBe("");
