@@ -1,0 +1,39 @@
+@page {
+  size: A4;
+  margin: 0;
+}
+
+.cv-page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 10mm 15mm 12mm;
+  overflow-wrap: break-word;
+  orphans: 3;
+  widows: 3;
+}
+
+@media print {
+  
+  .cv-page {
+    width: 210mm;
+    min-height: auto;
+    box-shadow: none !important;
+    margin: 0 auto !important;
+  }
+}
+
+.cv-block {
+  break-inside: avoid;
+}
+
+.cv-page h1,
+.cv-page h2,
+.cv-page h3 {
+  break-after: avoid;
+}
+
+@media print {
+  .cv-page a[href^="http"] {
+    text-decoration: underline;
+  }
+}

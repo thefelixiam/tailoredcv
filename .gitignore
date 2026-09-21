@@ -15,9 +15,14 @@ out/
 data/*.db
 data/*.db-*
 
-# playwright browsers (installed via `npx playwright install`)
+# browser binaries (installed via `npx puppeteer browsers install chrome`)
 # (kept in user cache, nothing to ignore locally)
+
+# AI coding assistants & agent instructions (local-only, never commit)
+.opencode/
+AGENTS.md
 
 # test / debug artifacts
 test-results/
 *.test.pdf
+tsconfig.tsbuildinfo
