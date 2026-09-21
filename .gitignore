@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# next
+.next/
+out/
+
+# env & secrets (never commit)
+.env
+.env*.local
+*.pem
+*.key
+
+# sqlite data
+data/*.db
+data/*.db-*
+
+# playwright browsers (installed via `npx playwright install`)
+# (kept in user cache, nothing to ignore locally)
+
+# test / debug artifacts
+test-results/
+*.test.pdf
